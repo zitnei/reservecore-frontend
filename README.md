@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ReserveCore Frontend
 
-## Getting Started
+[ReserveCore](https://github.com/zitnei/ReserveCore) (Spring Boot 予約管理 API) のフロントエンド。
+Next.js (App Router) + TypeScript + Tailwind CSS。
 
-First, run the development server:
+![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=nextdotjs)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?logo=tailwindcss&logoColor=white)
 
+> 🎯 **このリポジトリの目的**
+> バックエンド API を「面接官が実際に触れる」状態にするためのデモ UI。
+> 認証 → 店舗閲覧 → 予約作成 → キャンセル、ADMIN による店舗・スタッフ管理まで一通り操作できます。
+
+---
+
+## 機能
+
+| URL | 機能 | アクセス可 |
+|---|---|---|
+| `/` | ランディングページ | 全員 |
+| `/login` `/register` | 認証 | 未ログイン |
+| `/stores` | 店舗一覧 | ログイン済 |
+| `/stores/[id]` | 店舗詳細 + 予約作成 | ログイン済 |
+| `/reservations` | マイ予約 + キャンセル | ログイン済 |
+| `/admin` | 管理ダッシュボード | ADMIN/STAFF |
+| `/admin/stores` | 店舗一覧 + 作成 (ADMIN) | ADMIN/STAFF |
+| `/admin/stores/[id]/manage` | サービス追加・スタッフ割当 | ADMIN/STAFF |
+| `/admin/users` | ユーザー一覧 | ADMIN |
+
+---
+
+## ローカル開発
+
+### 前提
+- Node.js 20+ (検証は v24)
+- バックエンド (ReserveCore) がローカル `http://localhost:8080` で起動していること
+
+### バックエンドを起動
+別ターミナルで:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cd path/to/ReserveCore
+docker compose up
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### フロントエンドを起動
+```bash
+git clone https://github.com/<your-user>/reservecore-frontend.git
+cd reservecore-frontend
+npm install
+cp .env.local.example .env.local
+npm run dev
+# → http://localhost:3000
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 環境変数
 
-## Learn More
+| Key | デフォルト | 説明 |
+|---|---|---|
+| `NEXT_PUBLIC_API_BASE_URL` | `http://localhost:8080` | バックエンド API のベース URL |
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## アーキテクチャ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/                    # App Router ページ
+│   ├── layout.tsx          # 日本語ロケール、AuthProvider 組込、Header/Footer
+│   ├── page.tsx            # ランディング
+│   ├── login/  register/   # 認証
+│   ├── stores/             # 顧客フロー (一覧/詳細/予約作成)
+│   ├── reservations/       # マイ予約 + キャンセル
+│   └── admin/              # ADMIN/STAFF 用管理画面
+├── components/
+│   ├── Header.tsx          # ロール別ナビゲーション
+│   ├── Footer.tsx
+│   └── ErrorBanner.tsx     # 統一エラー表示 (fieldErrors 展開)
+└── lib/
+    ├── types.ts            # バックエンド DTO 対応の TS 型
+    ├── api.ts              # fetch ラッパー: JWT 自動付与、401 自動ログアウト
+    ├── auth.ts             # login / register / logout
+    ├── auth-context.tsx    # React Context (useAuth)
+    ├── endpoints.ts        # エンドポイント別ラッパー (stores/services/staff/reservations/users)
+    └── use-require-auth.ts # 未認証時 /login へ自動リダイレクト
+```
 
-## Deploy on Vercel
+### 認証
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- JWT を `localStorage` に保持 (`reservecore.token`)
+- `apiFetch` が自動で `Authorization: Bearer <token>` を付与
+- 401 を受けたらトークン破棄 + `/login?expired=1` へリダイレクト
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### エラー処理
+
+- `ApiError` クラスで `status + message + fieldErrors` を保持
+- `ErrorBanner` コンポーネントがフィールドエラー (`@Valid` 由来) も展開表示
+
+---
+
+## デプロイ (Vercel)
+
+1. このリポジトリを GitHub に push
+2. [Vercel Dashboard](https://vercel.com/new) → Import Project
+3. Environment Variables に追加:
+   ```
+   NEXT_PUBLIC_API_BASE_URL=https://<your-api>.onrender.com
+   ```
+4. Deploy
+5. デプロイ完了後の URL を、バックエンドの `CORS_ALLOWED_ORIGINS` に追加
+
+詳細手順は [バックエンドの DEPLOYMENT.md](https://github.com/zitnei/ReserveCore/blob/master/DEPLOYMENT.md) を参照。
+
+---
+
+## 関連
+
+- [ReserveCore (バックエンド)](https://github.com/zitnei/ReserveCore) — Spring Boot + PostgreSQL
