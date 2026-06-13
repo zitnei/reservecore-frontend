@@ -13,6 +13,24 @@ Next.js (App Router) + TypeScript + Tailwind CSS。
 
 ---
 
+## 🚀 ライブデモ
+
+**👉 https://reservecore-frontend.vercel.app**
+
+ログインしてすぐ予約フローを体験できます（デモデータ投入済み）。
+
+| ロール | メールアドレス | パスワード |
+|---|---|---|
+| 管理者 (ADMIN) | `admin@reservecore.com` | `admin1234` |
+| スタッフ (STAFF) | `staff.sato@reservecore.com` | `password123` |
+| 顧客 (CUSTOMER) | `customer.tanaka@reservecore.com` | `password123` |
+
+> ⚠️ バックエンド (Render Free) は 15 分アクセスがないとスリープします。
+> 初回アクセスは起動に **30秒〜1分** かかることがあります（2回目以降は高速）。
+> 公開デモ用の認証情報です。
+
+---
+
 ## 機能
 
 | URL | 機能 | アクセス可 |
