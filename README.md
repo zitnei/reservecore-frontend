@@ -8,7 +8,7 @@ Next.js (App Router) + TypeScript + Tailwind CSS。
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-38B2AC?logo=tailwindcss&logoColor=white)
 
 > 🎯 **このリポジトリの目的**
-> バックエンド API を「面接官が実際に触れる」状態にするためのデモ UI。
+> バックエンド API をブラウザ上で実際に操作・動作確認できるデモ UI。
 > 認証 → 店舗閲覧 → 予約作成 → キャンセル、ADMIN による店舗・スタッフ管理まで一通り操作できます。
 
 ---
