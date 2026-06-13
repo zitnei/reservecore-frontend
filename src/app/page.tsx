@@ -37,21 +37,33 @@ export default function Home() {
         </div>
 
         <div className="mt-8 rounded-md border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
-          <p className="font-medium">面接官様向けクイックガイド</p>
-          <ul className="mt-2 list-inside list-disc space-y-1">
+          <p className="font-medium">クイックガイド（デモアカウント）</p>
+          <ul className="mt-2 space-y-1">
             <li>
-              ADMIN アカウント: <code className="font-mono">admin@reservecore.com</code> /
-              <code className="font-mono"> admin1234</code>
-              （本番デプロイ後は環境変数で上書き）
+              管理者:{" "}
+              <code className="font-mono">admin@reservecore.com</code> /{" "}
+              <code className="font-mono">admin1234</code>
+              <span className="ml-1 text-xs text-amber-700">（店舗・スタッフ管理、全予約閲覧）</span>
             </li>
             <li>
-              CUSTOMER として新規登録 → 店舗からサービスを選んで予約 → マイ予約からキャンセル、までを一通り体験できます。
+              スタッフ:{" "}
+              <code className="font-mono">staff.sato@reservecore.com</code> /{" "}
+              <code className="font-mono">password123</code>
             </li>
             <li>
-              バックエンドは Render Free プランで稼働しているため、初回アクセスは起動に
-              <strong className="mx-1">30秒〜1分</strong>かかる場合があります。
+              顧客:{" "}
+              <code className="font-mono">customer.tanaka@reservecore.com</code> /{" "}
+              <code className="font-mono">password123</code>
             </li>
           </ul>
+          <p className="mt-3 text-xs text-amber-800">
+            ログイン後、店舗からサービスを選んで予約 → マイ予約からキャンセルまで体験できます。
+            「新規登録」から自分で顧客アカウントを作ることも可能です。
+          </p>
+          <p className="mt-1 text-xs text-amber-800">
+            ※ バックエンドは無料プランのため、初回アクセスは起動に
+            <strong className="mx-1">30秒〜1分</strong>かかることがあります（2回目以降は高速）。
+          </p>
         </div>
       </section>
 
