@@ -16,9 +16,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ReserveCore — 予約管理デモ",
+  title: "ReserveCore — 予約管理システム",
   description:
-    "Spring Boot + PostgreSQL で構築した予約管理 API のデモフロントエンド (Next.js)",
+    "Spring Boot + PostgreSQL で構築した予約管理システムのデモ (Next.js フロントエンド)",
 };
 
 export default function RootLayout({

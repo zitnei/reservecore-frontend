@@ -8,7 +8,7 @@ export default function Home() {
           Portfolio Demo
         </p>
         <h1 className="mt-2 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-          ReserveCore — 予約管理 API のデモ
+          ReserveCore — 予約管理システム
         </h1>
         <p className="mt-3 text-slate-600">
           Spring Boot + PostgreSQL で構築した REST API を、Next.js のフロントから実際に操作できます。
